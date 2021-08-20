@@ -57,7 +57,7 @@ void drawSphere(double r, int lats, int longs) {
 }
 
 void desenharTerra(double r, int lats, int longs) {
-   glColor3f(0.0f, 0.0f, 1.0f);
+   glColor3f(1.0f, 1.0f, 1.0f);
 	glPushMatrix();
 		glTranslated(0, 0, 1);
 		glEnable(GL_TEXTURE_2D);
@@ -334,8 +334,8 @@ int main(int argc, char *argv[])
     gluQuadricTexture(sphere, GL_TRUE);
     gluQuadricNormals(sphere, GLU_SMOOTH);
 
-	idTexturaSol = carregaTextura("img/sol.png");
-	idTexturaTerra = carregaTextura("img/terra.png");
+	idTexturaSol = carregaTextura("img/tronco.png");
+	idTexturaTerra = carregaTextura("img/mapa.png");
 
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
