@@ -24,11 +24,12 @@ float posTerra = 0.0f;
 float grow_shrink = 70.0f;
 float resize_f = 1.0f;
 
-GLuint idTexturaTerra;
 
 GLUquadricObj *sphere = NULL;
+GLUquadricObj *terra = NULL;
 
 GLuint idTexturaSol;
+GLuint idTexturaTerra;
 
 GLuint carregaTextura(const char* arquivo) {
     GLuint idTextura = SOIL_load_OGL_texture(
@@ -46,12 +47,6 @@ GLuint carregaTextura(const char* arquivo) {
 }
 
 void drawSphere(double r, int lats, int longs) {
-   
-    // glColor3f(0.0, 0.0, 0.0);  //color = black
-    // glPushMatrix();
-	// 	glTranslated(0, 0, 4-posTerra);
-	// 	glutSphere(1, 10, 10);
-    // glPopMatrix();
 
 	glPushMatrix();
 		glTranslated(0, 0, 4-posTerra);
@@ -59,7 +54,46 @@ void drawSphere(double r, int lats, int longs) {
 		glBindTexture(GL_TEXTURE_2D, idTexturaSol);
 		gluSphere(sphere, 1.0, 10, 10);
 	glPopMatrix();
+}
 
+void desenharTerra(double r, int lats, int longs) {
+   
+	// glPushMatrix();
+	// 	glTranslated(0, 0, 20-posTerra);
+	// 	gluSphere(terra, 1.0, 100, 100);
+	// glPopMatrix();
+
+	
+	// glPolygonMode(GL_FRONT,GL_FILL);
+	// glEnable(GL_TEXTURE_2D);
+	// GLUquadric *qobj = gluNewQuadric();
+	// gluQuadricTexture(qobj,GL_TRUE);
+	// glBindTexture(GL_TEXTURE_2D, idTexturaTerra);
+	// gluSphere(qobj,1,50,50);
+	// gluDeleteQuadric(qobj);
+	// glPolygonMode(GL_FRONT,GL_LINE);
+	// glDisable(GL_TEXTURE_2D);
+
+glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, idTexturaTerra);
+
+    // desenha um POLYGON por seus vertices
+    glBegin(GL_POLYGON);
+        // glColor3f(0, 1, 0); // cor da nave
+        
+        
+
+		glTexCoord2f(0, 0);
+		glVertex3f(0.5f, 0.5f, 1.5f);
+		glTexCoord2f(0, 1);
+		glVertex3f( 1.5f, 0.5f, 1.5f);
+		glTexCoord2f(1, 1);
+		glVertex3f( 1.5f, 1.5f, 1.5f);
+		glTexCoord2f(1, 0);
+		glVertex3f(0.5f, 1.5f, 1.5f);
+
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
 
 }
 
@@ -71,6 +105,7 @@ void drawBox()
 	//esfera
 	glColor3f(1.0f, 1.0f, 1.0f);
 	drawSphere(1, 10, 10);
+	desenharTerra(1, 10, 10);
 
 	//lado aleatorio
 	glBegin(GL_QUADS);
@@ -323,13 +358,14 @@ int main(int argc, char *argv[])
 	glutCreateWindow("Solar System");
 
 
-
+	terra = gluNewQuadric();
 	sphere = gluNewQuadric();
     gluQuadricDrawStyle(sphere, GLU_FILL);
     gluQuadricTexture(sphere, GL_TRUE);
     gluQuadricNormals(sphere, GLU_SMOOTH);
 
 	idTexturaSol = carregaTextura("img/sol.png");
+	idTexturaTerra = carregaTextura("img/terra.png");
 
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
