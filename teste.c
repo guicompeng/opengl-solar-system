@@ -57,43 +57,14 @@ void drawSphere(double r, int lats, int longs) {
 }
 
 void desenharTerra(double r, int lats, int longs) {
-   
-	// glPushMatrix();
-	// 	glTranslated(0, 0, 20-posTerra);
-	// 	gluSphere(terra, 1.0, 100, 100);
-	// glPopMatrix();
+   glColor3f(0.0f, 0.0f, 1.0f);
+	glPushMatrix();
+		glTranslated(0, 0, 1);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, idTexturaTerra);
+		gluSphere(sphere, 1.0, 100, 100);
+	glPopMatrix();
 
-	
-	// glPolygonMode(GL_FRONT,GL_FILL);
-	// glEnable(GL_TEXTURE_2D);
-	// GLUquadric *qobj = gluNewQuadric();
-	// gluQuadricTexture(qobj,GL_TRUE);
-	// glBindTexture(GL_TEXTURE_2D, idTexturaTerra);
-	// gluSphere(qobj,1,50,50);
-	// gluDeleteQuadric(qobj);
-	// glPolygonMode(GL_FRONT,GL_LINE);
-	// glDisable(GL_TEXTURE_2D);
-
-glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, idTexturaTerra);
-
-    // desenha um POLYGON por seus vertices
-    glBegin(GL_POLYGON);
-        // glColor3f(0, 1, 0); // cor da nave
-        
-        
-
-		glTexCoord2f(0, 0);
-		glVertex3f(0.5f, 0.5f, 1.5f);
-		glTexCoord2f(0, 1);
-		glVertex3f( 1.5f, 0.5f, 1.5f);
-		glTexCoord2f(1, 1);
-		glVertex3f( 1.5f, 1.5f, 1.5f);
-		glTexCoord2f(1, 0);
-		glVertex3f(0.5f, 1.5f, 1.5f);
-
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
 
 }
 
@@ -187,7 +158,6 @@ void display(void)
 
 	drawBox();
 
-	glFlush();
 	glutSwapBuffers();
 }
 
@@ -353,7 +323,7 @@ int main(int argc, char *argv[])
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(500, 500);
 
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 
 	glutCreateWindow("Solar System");
 
