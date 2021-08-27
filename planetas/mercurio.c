@@ -19,18 +19,18 @@ void iniciarMercurio(GLuint textura) {
     idTexturaMercurio = textura;
 }
 
-void desenharMercurio() {
+void desenharMercurio(int qualidade) {
 	glPushMatrix();
 		glTranslatef(mercurio_x, 0, mercurio_y);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, idTexturaMercurio);
-		gluSphere(obj_mercurio, mercurio_tam, 10, 10);
+		gluSphere(obj_mercurio, mercurio_tam, qualidade, qualidade);
 	glPopMatrix();
 }
 
 void movimentaMercurio() {
-	mercurio_ang += mercurio_veloc/10000;
-	if(mercurio_ang >= 360) {
+	mercurio_ang -= mercurio_veloc/10000;
+	if(mercurio_ang < -360) {
 		mercurio_ang = 0;
 	}
 	mercurio_x = mercurio_raio * cos(mercurio_ang);

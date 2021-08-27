@@ -18,19 +18,19 @@ void iniciarSol(GLuint textura) {
     idTexturaSol = textura;
 }
 
-void desenharSol() {
+void desenharSol(int qualidade) {
 	glPushMatrix();
 		glTranslatef(sol_x, 0, sol_y);
 		glRotatef(sol_ang,0, 1, 0); 
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, idTexturaSol);
-		gluSphere(obj_sol, sol_tam, 10, 10);
+		gluSphere(obj_sol, sol_tam, qualidade, qualidade);
 	glPopMatrix();
 }
 
 void movimentaSol() {
-	sol_ang -= 1.3f; 
-	if(sol_ang < -360.0f) { 
+	sol_ang += 2.0f; 
+	if(sol_ang > 360.0f) { 
 		sol_ang = 0.0f; 
 	} 
 }

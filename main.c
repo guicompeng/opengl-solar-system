@@ -8,7 +8,12 @@
 
 #include "planetas/sol.h"
 #include "planetas/mercurio.h"
+#include "planetas/venus.h"
 #include "planetas/terra.h"
+
+const int qualidade = 30;
+
+int pause = 0;
 
 int fullscreen = 0;
 int mouseDown = 0;
@@ -28,6 +33,7 @@ float resize_f = 1.0f;
 
 GLuint idTexturaSol;
 GLuint idTexturaMercurio;
+GLuint idTexturaVenus;
 GLuint idTexturaTerra;
 
 GLuint carregaTextura(const char* arquivo) {
@@ -50,9 +56,10 @@ void desenhaPlanetas() {
 	glTranslatef(tra_x, tra_y, tra_z);
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	desenharSol();
-	desenharMercurio();
-	desenharTerra();
+	desenharSol(qualidade);
+	desenharMercurio(qualidade);
+	desenharVenus(qualidade);
+	desenharTerra(qualidade);
 }
 
 int init()
@@ -130,9 +137,9 @@ void keyboard(unsigned char key, int x, int y)
 		case 27 : 
 			exit(1); 
 			break;
-
-			
-
+		case 'p':
+			pause = !pause;
+			break;
 		case 'w':
 		case 'W':
 			tra_x += 0.1f;
@@ -230,13 +237,15 @@ void mouseMotion(int x, int y)
 
 
 void movimentaItems() {
-
-	movimentaSol();
-	movimentaMercurio();
-	movimentaTerra();
-
-  	glutPostRedisplay();
-  	glutTimerFunc(33, movimentaItems, 1);
+	if(!pause) {
+		movimentaSol();
+		movimentaMercurio();
+		movimentaVenus();
+		movimentaTerra();
+	}
+	glutPostRedisplay();
+	glutTimerFunc(33, movimentaItems, 1);
+	
 }
 
 int main(int argc, char *argv[])
@@ -252,10 +261,12 @@ int main(int argc, char *argv[])
 
 	idTexturaSol = carregaTextura("img/sol.png");
 	idTexturaMercurio = carregaTextura("img/mercurio.png");
+	idTexturaVenus = carregaTextura("img/venus.png");
 	idTexturaTerra = carregaTextura("img/terra.png");
 
 	iniciarSol(idTexturaSol);
 	iniciarMercurio(idTexturaMercurio);
+	iniciarVenus(idTexturaVenus);
 	iniciarTerra(idTexturaTerra);
 
 	glutDisplayFunc(display);
