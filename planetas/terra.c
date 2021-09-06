@@ -23,7 +23,8 @@ void iniciarTerra(GLuint textura) {
 void desenharTerra(int qualidade) {
 	glPushMatrix();
 		glTranslatef(terra_x, 0, terra_y);
-		glRotatef(terra_rotate,0, 1, 0); 
+		glRotatef(terra_rotate,0, 1, 0);
+		glRotatef(-90,1, 0, 0);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, idTexturaTerra);
 		gluSphere(obj_terra, terra_tam, qualidade, qualidade);
@@ -39,8 +40,8 @@ void movimentaTerra() {
 	terra_y = terra_raio * sin(terra_ang);
 
 	//rotation
-	terra_rotate += 20.0f; 
-	if(terra_rotate > 360.0f) { 
-		terra_rotate = 0.0f; 
-	} 
+	terra_rotate += 20.0f;
+	if(terra_rotate > 360.0f) {
+		terra_rotate = 0.0f;
+	}
 }

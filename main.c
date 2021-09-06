@@ -1,9 +1,7 @@
 #include <SOIL/SOIL.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <math.h>
 
 #include "planetas/sol.h"
@@ -15,21 +13,19 @@ const int qualidade = 30;
 
 int pause = 0;
 
-int fullscreen = 0;
 int mouseDown = 0;
 
 float xrot = 0.0f;
-float yrot = -0.0f;
+float yrot = 0.0f;
 
 float xdiff = 0.0f;
 float ydiff = 0.0f;
 
 float tra_x = 0.0f;
 float tra_y = 0.0f;
-float tra_z = 0.0f;
+float tra_z = -10.0f; //visao de longe
 
-float grow_shrink = 70.0f;
-float resize_f = 1.0f;
+int modoLuz = 1;
 
 GLuint idTexturaSol;
 GLuint idTexturaMercurio;
@@ -62,14 +58,6 @@ void desenhaPlanetas() {
 	desenharTerra(qualidade);
 }
 
-int init()
-{
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
-	glClearDepth(1.0f);
-}
 
 void display(void)
 {
@@ -96,120 +84,74 @@ void resize(int w, int h)
 
 	glViewport(0, 0, w, h);
 
-	gluPerspective(grow_shrink, resize_f * w / h, resize_f, 100 * resize_f);
+	gluPerspective(70.0f, 1.0f * w / h, 1.0f, 100 * 1.0f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
 
-void idle(void)
-{
-	if (!mouseDown)
-	{
-		xrot += 0.3f;
-		yrot += 0.4f;
-	}
 
-	glutPostRedisplay();
-}
+void configuraLuz(){
+    if(modoLuz == 1){
+        GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+        GLfloat mat_shininess[] = { 10.0 };
+        GLfloat light_position[] = { 0.1, 0.1, 0.1, 0 };
+        glShadeModel (GL_SMOOTH);
 
+        glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+        glMaterialfv(GL_FRONT, GL_AMBIENT, mat_specular);
 
-void mySpecialFunction(int key, int x, int y)
-{
-    //if (key == GLUT_KEY_F1)
-    //{
-        printf("U -----------> rotate clockwise\n");
-        printf("Y -----------> rotate counter clockwise\n");
-        printf("W or w ------> Up\n");
-        printf("S or s -----> Down\n");
-        printf("D or d ------> Right\n");
-        printf("A or a ------> Left\n");
-        printf("Z or z ------> Shrink\n");
-        printf("X or x ------> Grow\n");
-        printf("Escape Key ---> exit the program\n\n");
-    //}
+        glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glEnable(GL_DEPTH_TEST);
+    }  else {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_LIGHT0);
+    }
 }
 
 void keyboard(unsigned char key, int x, int y)
 {
 	switch(key)
 	{
-		case 27 : 
-			exit(1); 
+		case 27 : //esc
+			exit(1);
 			break;
 		case 'p':
 			pause = !pause;
 			break;
+		case 'l':
+		  modoLuz = !modoLuz;
+		  break;
+		case '1':
+		  xrot = 90;
+		  tra_z = 0;
+		  break;
+		case '2':
+		  xrot = 0;
+		  tra_z = -10;
+		  break;
 		case 'w':
-		case 'W':
-			tra_x += 0.1f;
-			break;
-		case 's':
-		case 'S':
-			tra_x -= 0.1f;
-			break;
-		case 'a':
-		case 'A':
-			tra_z -= 0.1f;
-			break;
-		case 'd':
-		case 'D':
 			tra_z += 0.1f;
 			break;
-		case 'u':
-		case 'U':
-			xrot += 1.0f;
-			yrot += 1.0f;
-			xdiff += 1.0f;
-			ydiff += 1.0f;
+		case 's':
+			tra_z -= 0.1f;
 			break;
-
-		case 'y':
-		case 'Y':
-			xrot -= 1.0f;
-			yrot -= 1.0f;
-			xdiff += 1.0f;
-			ydiff += 1.0f;
+		case 'a':
+			tra_x += 0.1f;
 			break;
-
-		case 'h':
-		case 'H':
-			mySpecialFunction(key, x, y);
+		case 'd':
+		  tra_x -= 0.1f;
 			break;
-		case 'Z':
-		case 'z':
-			grow_shrink--;
-			resize(500, 500);
-			
-			break;
-		case 'X':
-		case 'x':
-			grow_shrink++;
-			resize(500, 500);
-			
-			break;
-
 	}
 
 	
 	glutPostRedisplay();
 }
 
-void specialKeyboard(int key, int x, int y)
-{
-	if (key == GLUT_KEY_F1)
-	{
-		fullscreen = !fullscreen;
-
-		if (fullscreen)
-			glutFullScreen();
-		else
-		{
-			glutReshapeWindow(500, 500);
-			glutPositionWindow(50, 50);
-		}
-	}
-}
 
 void mouse(int button, int state, int x, int y)
 {
@@ -224,7 +166,7 @@ void mouse(int button, int state, int x, int y)
 		mouseDown = 0;
 }
 
-void mouseMotion(int x, int y)
+void movimentaMouse(int x, int y)
 {
 	if (mouseDown)
 	{
@@ -243,6 +185,7 @@ void movimentaItems() {
 		movimentaVenus();
 		movimentaTerra();
 	}
+	configuraLuz();
 	glutPostRedisplay();
 	glutTimerFunc(33, movimentaItems, 1);
 	
@@ -253,11 +196,11 @@ int main(int argc, char *argv[])
 	glutInit(&argc, argv);
 
 	glutInitWindowPosition(50, 50);
-	glutInitWindowSize(500, 500);
+	glutInitWindowSize(1000, 600);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 
-	glutCreateWindow("Solar System");
+	glutCreateWindow("Sistema Solar");
 
 	idTexturaSol = carregaTextura("img/sol.png");
 	idTexturaMercurio = carregaTextura("img/mercurio.png");
@@ -271,14 +214,11 @@ int main(int argc, char *argv[])
 
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
-	glutSpecialFunc(specialKeyboard);
 	glutMouseFunc(mouse);
-	glutMotionFunc(mouseMotion);
+	glutMotionFunc(movimentaMouse);
 	glutReshapeFunc(resize);
-
+	
 	glutTimerFunc(33, movimentaItems, 1); // 1000/33 = 30 frames por segundo
-
-	init();
 
 	glutMainLoop();
 
