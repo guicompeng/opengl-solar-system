@@ -22,6 +22,7 @@ void iniciarVenus(GLuint textura) {
 void desenharVenus(int qualidade) {
 	glPushMatrix();
 		glTranslatef(venus_x, 0, venus_y);
+		glRotatef(-90,1, 0, 0);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, idTexturaVenus);
 		gluSphere(obj_venus, venus_tam, qualidade, qualidade);

@@ -22,6 +22,7 @@ void iniciarMercurio(GLuint textura) {
 void desenharMercurio(int qualidade) {
 	glPushMatrix();
 		glTranslatef(mercurio_x, 0, mercurio_y);
+		glRotatef(-90,1, 0, 0);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, idTexturaMercurio);
 		gluSphere(obj_mercurio, mercurio_tam, qualidade, qualidade);

@@ -8,6 +8,11 @@
 #include "planetas/mercurio.h"
 #include "planetas/venus.h"
 #include "planetas/terra.h"
+#include "planetas/marte.h"
+#include "planetas/jupiter.h"
+#include "planetas/saturno.h"
+#include "planetas/urano.h"
+#include "planetas/netuno.h"
 
 const int qualidade = 30;
 
@@ -23,7 +28,7 @@ float ydiff = 0.0f;
 
 float tra_x = 0.0f;
 float tra_y = 0.0f;
-float tra_z = -10.0f; //visao de longe
+float tra_z = -10.0f; //-10 = visao de longe
 
 int modoLuz = 1;
 
@@ -31,6 +36,11 @@ GLuint idTexturaSol;
 GLuint idTexturaMercurio;
 GLuint idTexturaVenus;
 GLuint idTexturaTerra;
+GLuint idTexturaMarte;
+GLuint idTexturaJupiter;
+GLuint idTexturaSaturno;
+GLuint idTexturaUrano;
+GLuint idTexturaNetuno;
 
 GLuint carregaTextura(const char* arquivo) {
     GLuint idTextura = SOIL_load_OGL_texture(
@@ -56,6 +66,11 @@ void desenhaPlanetas() {
 	desenharMercurio(qualidade);
 	desenharVenus(qualidade);
 	desenharTerra(qualidade);
+	desenharMarte(qualidade);
+	desenharJupiter(qualidade);
+	desenharSaturno(qualidade);
+	desenharUrano(qualidade);
+	desenharNetuno(qualidade);
 }
 
 
@@ -129,10 +144,12 @@ void keyboard(unsigned char key, int x, int y)
 		case '1':
 		  xrot = 90;
 		  tra_z = 0;
+		  tra_y = -10;
 		  break;
 		case '2':
 		  xrot = 0;
 		  tra_z = -10;
+		  tra_y = 0;
 		  break;
 		case 'w':
 			tra_z += 0.1f;
@@ -184,6 +201,11 @@ void movimentaItems() {
 		movimentaMercurio();
 		movimentaVenus();
 		movimentaTerra();
+		movimentaMarte();
+		movimentaJupiter();
+		movimentaSaturno();
+		movimentaUrano();
+		movimentaNetuno();
 	}
 	configuraLuz();
 	glutPostRedisplay();
@@ -206,12 +228,22 @@ int main(int argc, char *argv[])
 	idTexturaMercurio = carregaTextura("img/mercurio.png");
 	idTexturaVenus = carregaTextura("img/venus.png");
 	idTexturaTerra = carregaTextura("img/terra.png");
-
+	idTexturaMarte = carregaTextura("img/marte.png");
+	idTexturaJupiter = carregaTextura("img/jupiter.png");
+	idTexturaSaturno = carregaTextura("img/saturno.png");
+	idTexturaUrano = carregaTextura("img/urano.png");
+	idTexturaNetuno = carregaTextura("img/netuno.png");
+	
 	iniciarSol(idTexturaSol);
 	iniciarMercurio(idTexturaMercurio);
 	iniciarVenus(idTexturaVenus);
 	iniciarTerra(idTexturaTerra);
-
+	iniciarMarte(idTexturaMarte);
+	iniciarJupiter(idTexturaJupiter);
+	iniciarSaturno(idTexturaSaturno);
+	iniciarUrano(idTexturaUrano);
+	iniciarNetuno(idTexturaNetuno);
+	
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
