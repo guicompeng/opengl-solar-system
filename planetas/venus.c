@@ -8,6 +8,7 @@ const float venus_raio = 3;
 const float venus_veloc = 300;//0 a 1000
 
 float venus_ang = 0.0;
+float venus_rotate = 0.0;
 float venus_x = 0.0;
 float venus_y = 0.0;
 
@@ -22,6 +23,7 @@ void iniciarVenus(GLuint textura) {
 void desenharVenus(int qualidade) {
 	glPushMatrix();
 		glTranslatef(venus_x, 0, venus_y);
+		glRotatef(venus_rotate,0, 1, 0);
 		glRotatef(-90,1, 0, 0);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, idTexturaVenus);
@@ -36,4 +38,10 @@ void movimentaVenus() {
 	}
 	venus_x = venus_raio * cos(venus_ang);
 	venus_y = venus_raio * sin(venus_ang);
+	
+	//rotation
+	venus_rotate += 5.0f;
+	if(venus_rotate > 360.0f) {
+		venus_rotate = 0.0f;
+	}
 }

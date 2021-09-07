@@ -5,9 +5,10 @@ GLuint idTexturaJupiter;
 
 const float jupiter_tam = 1.0;
 const float jupiter_raio = 9;
-const float jupiter_veloc = 100;//0 a 1000
+const float jupiter_veloc = 140;//0 a 1000
 
 float jupiter_ang = 0.0;
+float jupiter_rotate = 0.0;
 float jupiter_x = 0.0;
 float jupiter_y = 0.0;
 
@@ -22,6 +23,7 @@ void iniciarJupiter(GLuint textura) {
 void desenharJupiter(int qualidade) {
 	glPushMatrix();
 		glTranslatef(jupiter_x, 0, jupiter_y);
+		glRotatef(jupiter_rotate,0, 1, 0);
 		glRotatef(-90,1, 0, 0);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, idTexturaJupiter);
@@ -36,4 +38,10 @@ void movimentaJupiter() {
 	}
 	jupiter_x = jupiter_raio * cos(jupiter_ang);
 	jupiter_y = jupiter_raio * sin(jupiter_ang);
+	
+	//rotation
+	jupiter_rotate += 10.0f;
+	if(jupiter_rotate > 360.0f) {
+		jupiter_rotate = 0.0f;
+	}
 }

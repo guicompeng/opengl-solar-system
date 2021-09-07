@@ -5,9 +5,10 @@ GLuint idTexturaSaturno;
 
 const float saturno_tam = 0.2;
 const float saturno_raio = 11;
-const float saturno_veloc = 150;//0 a 1000
+const float saturno_veloc = 100;//0 a 1000
 
 float saturno_ang = 0.0;
+float saturno_rotate = 0.0;
 float saturno_x = 0.0;
 float saturno_y = 0.0;
 
@@ -22,6 +23,7 @@ void iniciarSaturno(GLuint textura) {
 void desenharSaturno(int qualidade) {
 	glPushMatrix();
 		glTranslatef(saturno_x, 0, saturno_y);
+		glRotatef(saturno_rotate,0, 1, 0);
 		glRotatef(-90,1, 0, 0);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, idTexturaSaturno);
@@ -36,4 +38,10 @@ void movimentaSaturno() {
 	}
 	saturno_x = saturno_raio * cos(saturno_ang);
 	saturno_y = saturno_raio * sin(saturno_ang);
+	
+	//rotation
+	saturno_rotate += 6.0f;
+	if(saturno_rotate > 360.0f) {
+		saturno_rotate = 0.0f;
+	}
 }

@@ -8,6 +8,7 @@ const float mercurio_raio = 2;
 const float mercurio_veloc = 1000;//0 a 1000
 
 float mercurio_ang = 0.0;
+float mercurio_rotate = 0.0;
 float mercurio_x = 0.0;
 float mercurio_y = 0.0;
 
@@ -22,6 +23,7 @@ void iniciarMercurio(GLuint textura) {
 void desenharMercurio(int qualidade) {
 	glPushMatrix();
 		glTranslatef(mercurio_x, 0, mercurio_y);
+		glRotatef(mercurio_rotate,0, 1, 0);
 		glRotatef(-90,1, 0, 0);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, idTexturaMercurio);
@@ -36,4 +38,10 @@ void movimentaMercurio() {
 	}
 	mercurio_x = mercurio_raio * cos(mercurio_ang);
 	mercurio_y = mercurio_raio * sin(mercurio_ang);
+	
+	//rotation
+	mercurio_rotate += 14.0f;
+	if(mercurio_rotate > 360.0f) {
+		mercurio_rotate = 0.0f;
+	}
 }
